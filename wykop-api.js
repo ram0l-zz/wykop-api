@@ -114,9 +114,23 @@ var apiRequest = function (rtype, rmethod, rmethod_params, api_params, post_para
 	};
 
 
-	request(options, callback);
+	request(options, function(error, response, body) {
 
-	
+		var errorObj, bodyObj;
+
+		if (error) {
+			errorObj = error;
+		} else if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+			errorObj = response;
+		} else if (body.error) {
+			errorObj = body.error;
+		} else {
+			bodyObj = body;
+		}
+
+		callback(errorObj, bodyObj);
+
+	});
 };
 
 
@@ -179,27 +193,27 @@ WykopAPI.prototype.authenticate = function (accountkey, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("User", "Login", null, {appkey:self.appkey, secretkey:self.secretkey}, {accountkey:self.accountkey}, function(error, response, body) {
-
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else {
-				self.userkey = body.userkey;
-				fulfill(body);
-			}
+		apiRequest("User", "Login", null, {appkey:self.appkey, secretkey:self.secretkey}, {accountkey:self.accountkey}, function(error, body) {
 
 			if (callback) {
 
-				return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					self.userkey = body.userkey;
+					fulfill(body);
+
+				}
 			}
 		});
 	});
-
 };
 
 
@@ -223,18 +237,24 @@ WykopAPI.prototype.addComment = function (param1, param2, body, embed, callback)
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Comments", "Add", [param1, param2], api_params, {body:body,embed:embed}, function(error, response, body) {
+		apiRequest("Comments", "Add", [param1, param2], api_params, {body:body,embed:embed}, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -247,18 +267,24 @@ WykopAPI.prototype.plusComment = function (param1, param2, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Comments", "Plus", [param1, param2], api_params, null, function(error, response, body) {
+		apiRequest("Comments", "Plus", [param1, param2], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -271,18 +297,24 @@ WykopAPI.prototype.minusComment = function (param1, param2, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Comments", "Minus", [param1, param2], api_params, null, function(error, response, body) {
+		apiRequest("Comments", "Minus", [param1, param2], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -295,18 +327,24 @@ WykopAPI.prototype.editComment = function (param1, body, embed, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Comments", "Edit", [param1], api_params, {body:body,embed:embed}, function(error, response, body) {
+		apiRequest("Comments", "Edit", [param1], api_params, {body:body,embed:embed}, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -319,18 +357,24 @@ WykopAPI.prototype.deleteComment = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Comments", "Delete", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Comments", "Delete", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -356,18 +400,24 @@ WykopAPI.prototype.getLink = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Link", "Index", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Link", "Index", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -380,18 +430,24 @@ WykopAPI.prototype.digLink = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Link", "Dig", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Link", "Dig", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -404,18 +460,24 @@ WykopAPI.prototype.cancelLink = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Link", "Cancel", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Link", "Cancel", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -428,18 +490,24 @@ WykopAPI.prototype.buryLink = function (param1, param2, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Link", "Bury", [param1,param2], api_params, null, function(error, response, body) {
+		apiRequest("Link", "Bury", [param1,param2], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -452,18 +520,24 @@ WykopAPI.prototype.getLinkComments = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Link", "Comments", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Link", "Comments", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -476,18 +550,24 @@ WykopAPI.prototype.getLinkReports = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Link", "Reports", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Link", "Reports", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -500,18 +580,24 @@ WykopAPI.prototype.getLinkDigs = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Link", "Digs", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Link", "Digs", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -524,18 +610,24 @@ WykopAPI.prototype.getLinkRelated = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Link", "Related", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Link", "Related", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -547,18 +639,24 @@ WykopAPI.prototype.getLinkBuryreasons = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Link", "Buryreasons", null, api_params, null, function(error, response, body) {
+		apiRequest("Link", "Buryreasons", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -571,18 +669,24 @@ WykopAPI.prototype.observeLink = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Link", "Observe", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Link", "Observe", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -595,18 +699,24 @@ WykopAPI.prototype.favoriteLink = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Link", "Favorite", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Link", "Favorite", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -631,18 +741,24 @@ WykopAPI.prototype.getLinksPromoted = function (page, sort, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Links", "Promoted", null, api_params, null, function(error, response, body) {
+		apiRequest("Links", "Promoted", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -654,18 +770,24 @@ WykopAPI.prototype.getLinksUpcoming = function (page, sort, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Links", "Upcoming", null, api_params, null, function(error, response, body) {
+		apiRequest("Links", "Upcoming", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -690,18 +812,24 @@ WykopAPI.prototype.getPopularPromoted = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Popular", "Promoted", null, api_params, null, function(error, response, body) {
+		apiRequest("Popular", "Promoted", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -713,18 +841,24 @@ WykopAPI.prototype.getPopularUpcoming = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Popular", "Upcoming", null, api_params, null, function(error, response, body) {
+		apiRequest("Popular", "Upcoming", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -750,18 +884,24 @@ WykopAPI.prototype.getProfile = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Index", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Index", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -774,18 +914,24 @@ WykopAPI.prototype.getProfileLinks = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Added", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Added", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -798,18 +944,24 @@ WykopAPI.prototype.getProfilePublished = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Published", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Published", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -822,18 +974,24 @@ WykopAPI.prototype.getProfileCommented = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Commented", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Commented", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -846,18 +1004,24 @@ WykopAPI.prototype.getProfileDigged = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Digged", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Digged", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -870,18 +1034,24 @@ WykopAPI.prototype.getProfileBuried = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Buried", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Buried", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -894,18 +1064,24 @@ WykopAPI.prototype.observeProfile = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Observe", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Observe", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -918,18 +1094,24 @@ WykopAPI.prototype.unobserveProfile = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Unobserve", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Unobserve", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -942,18 +1124,24 @@ WykopAPI.prototype.blockProfile = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Block", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Block", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -966,18 +1154,24 @@ WykopAPI.prototype.unblockProfile = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Unblock", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Unblock", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -990,18 +1184,24 @@ WykopAPI.prototype.getProfileFollowers = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Followers", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Followers", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1014,18 +1214,24 @@ WykopAPI.prototype.getProfileFollowed = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Followed", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Followed", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1038,18 +1244,24 @@ WykopAPI.prototype.getProfileFavorites = function (param1, param2, page, callbac
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Favorites", [param1, param2], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Favorites", [param1, param2], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1062,18 +1274,24 @@ WykopAPI.prototype.getProfileEntries = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Entries", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Entries", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1086,18 +1304,24 @@ WykopAPI.prototype.getProfileEntriesComments = function (param1, page, callback)
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "EntriesComments", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "EntriesComments", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1110,18 +1334,24 @@ WykopAPI.prototype.getProfileRelatedLinks = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Profile", "Related", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Profile", "Related", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1157,18 +1387,24 @@ WykopAPI.prototype.search = function (question, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Search", "Index", null, api_params, postObject, function(error, response, body) {
+		apiRequest("Search", "Index", null, api_params, postObject, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1201,18 +1437,24 @@ WykopAPI.prototype.searchLinks = function (question, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Search", "Links", null, api_params, postObject, function(error, response, body) {
+		apiRequest("Search", "Links", null, api_params, postObject, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1234,18 +1476,24 @@ WykopAPI.prototype.searchEntries = function (question, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Search", "Entries", null, api_params, postObject, function(error, response, body) {
+		apiRequest("Search", "Entries", null, api_params, postObject, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1267,18 +1515,24 @@ WykopAPI.prototype.searchProfiles = function (question, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Search", "Profiles", null, api_params, postObject, function(error, response, body) {
+		apiRequest("Search", "Profiles", null, api_params, postObject, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1307,21 +1561,25 @@ WykopAPI.prototype.login = function (accountkey, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("User", "Login", null, {appkey:self.appkey,secretkey:self.secretkey}, {accountkey:accountkey}, function(error, response, body) {
+		apiRequest("User", "Login", null, {appkey:self.appkey,secretkey:self.secretkey}, {accountkey:accountkey}, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
+			if (callback) {
+
+				return callback(error, body);
+
 			} else {
-				self.userkey = body.userkey;
-				fulfill(body);
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					self.userkey = body.userkey;
+					fulfill(body);
+
+				}
 			}
-
-			if (callback) return callback(error, response, body);
-
 		});
 	});
 };
@@ -1333,18 +1591,24 @@ WykopAPI.prototype.userFavorites = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("User", "Favorites", null, api_params, null, function(error, response, body) {
+		apiRequest("User", "Favorites", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1356,18 +1620,24 @@ WykopAPI.prototype.userObserved = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("User", "Observed", null, api_params, null, function(error, response, body) {
+		apiRequest("User", "Observed", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1379,18 +1649,24 @@ WykopAPI.prototype.userObservedTags = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("User", "Tags", null, api_params, null, function(error, response, body) {
+		apiRequest("User", "Tags", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1442,18 +1718,24 @@ WykopAPI.prototype.getTop = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Top", "Index", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Top", "Index", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1466,18 +1748,24 @@ WykopAPI.prototype.getTopMonth = function (param1, param2, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Top", "Date", [param1,param2], api_params, null, function(error, response, body) {
+		apiRequest("Top", "Date", [param1,param2], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1489,18 +1777,24 @@ WykopAPI.prototype.getTopHits = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Top", "Hits", null, api_params, null, function(error, response, body) {
+		apiRequest("Top", "Hits", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1538,18 +1832,24 @@ WykopAPI.prototype.addLink = function (group, parameters, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Add", "Index", null, api_params, parameters, function(error, response, body) {
+		apiRequest("Add", "Index", null, api_params, parameters, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1577,18 +1877,24 @@ WykopAPI.prototype.plusRelated = function (param1, param2, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Related", "Plus", [param1, param2], api_params, null, function(error, response, body) {
+		apiRequest("Related", "Plus", [param1, param2], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1601,18 +1907,24 @@ WykopAPI.prototype.minusRelated = function (param1, param2, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Related", "Minus", [param1, param2], api_params, null, function(error, response, body) {
+		apiRequest("Related", "Minus", [param1, param2], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1634,18 +1946,24 @@ WykopAPI.prototype.addRelated = function (param1, parameters, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Related", "Add", [param1], api_params, parameters, function(error, response, body) {
+		apiRequest("Related", "Add", [param1], api_params, parameters, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1672,18 +1990,24 @@ WykopAPI.prototype.getMywykop = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("MyWykop", "Index", null, api_params, null, function(error, response, body) {
+		apiRequest("MyWykop", "Index", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1695,18 +2019,24 @@ WykopAPI.prototype.getMywykopTags = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("MyWykop", "Tags", null, api_params, null, function(error, response, body) {
+		apiRequest("MyWykop", "Tags", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1718,18 +2048,24 @@ WykopAPI.prototype.getMywykopUsers = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("MyWykop", "Users", null, api_params, null, function(error, response, body) {
+		apiRequest("MyWykop", "Users", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1741,18 +2077,24 @@ WykopAPI.prototype.getMywykopObserving = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("MyWykop", "Observing", null, api_params, null, function(error, response, body) {
+		apiRequest("MyWykop", "Observing", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1764,18 +2106,24 @@ WykopAPI.prototype.getMywykopMine = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("MyWykop", "Mine", null, api_params, null, function(error, response, body) {
+		apiRequest("MyWykop", "Mine", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1787,18 +2135,24 @@ WykopAPI.prototype.getMywykopReceived = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("MyWykop", "Received", null, api_params, null, function(error, response, body) {
+		apiRequest("MyWykop", "Received", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1810,18 +2164,24 @@ WykopAPI.prototype.getNotifications = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("MyWykop", "Notifications", null, api_params, null, function(error, response, body) {
+		apiRequest("MyWykop", "Notifications", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1833,18 +2193,24 @@ WykopAPI.prototype.getNotificationsCount = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("MyWykop", "NotificationsCount", null, api_params, null, function(error, response, body) {
+		apiRequest("MyWykop", "NotificationsCount", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1856,18 +2222,24 @@ WykopAPI.prototype.getHashtagsNotifications = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("MyWykop", "HashTagsNotifications", null, api_params, null, function(error, response, body) {
+		apiRequest("MyWykop", "HashTagsNotifications", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1879,18 +2251,24 @@ WykopAPI.prototype.getHashtagsNotificationsCount = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("MyWykop", "HashTagsNotificationsCount", null, api_params, null, function(error, response, body) {
+		apiRequest("MyWykop", "HashTagsNotificationsCount", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1902,18 +2280,24 @@ WykopAPI.prototype.readNotifications = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("MyWykop", "ReadNotifications", null, api_params, null, function(error, response, body) {
+		apiRequest("MyWykop", "ReadNotifications", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1925,18 +2309,24 @@ WykopAPI.prototype.readHashtagsNotifications = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("MyWykop", "ReadHashTagsNotifications", null, api_params, null, function(error, response, body) {
+		apiRequest("MyWykop", "ReadHashTagsNotifications", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1949,18 +2339,24 @@ WykopAPI.prototype.markAsReadNotification = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("MyWykop", "MarkAsReadNotification", [param1], api_params, null, function(error, response, body) {
+		apiRequest("MyWykop", "MarkAsReadNotification", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -1988,18 +2384,24 @@ WykopAPI.prototype.getEntry = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Entries", "Index", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Entries", "Index", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2012,18 +2414,24 @@ WykopAPI.prototype.addEntry = function (body, embed, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Entries", "Add", null, api_params, {body:body,embed:embed}, function(error, response, body) {
+		apiRequest("Entries", "Add", null, api_params, {body:body,embed:embed}, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2036,18 +2444,24 @@ WykopAPI.prototype.editEntry = function (param1, body, embed, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Entries", "Edit", [param1], api_params, {body:body,embed:embed}, function(error, response, body) {
+		apiRequest("Entries", "Edit", [param1], api_params, {body:body,embed:embed}, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2060,18 +2474,24 @@ WykopAPI.prototype.deleteEntry = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Entries", "Delete", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Entries", "Delete", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2084,18 +2504,24 @@ WykopAPI.prototype.addEntryComment = function (param1, body, embed, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Entries", "AddComment", [param1], api_params, {body:body,embed:embed}, function(error, response, body) {
+		apiRequest("Entries", "AddComment", [param1], api_params, {body:body,embed:embed}, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2108,18 +2534,24 @@ WykopAPI.prototype.editEntryComment = function (param1, param2, body, embed, cal
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Entries", "EditComment", [param1,param2], api_params, {body:body,embed:embed}, function(error, response, body) {
+		apiRequest("Entries", "EditComment", [param1,param2], api_params, {body:body,embed:embed}, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2132,18 +2564,24 @@ WykopAPI.prototype.deleteEntryComment = function (param1, param2, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Entries", "DeleteComment", [param1, param2], api_params, null, function(error, response, body) {
+		apiRequest("Entries", "DeleteComment", [param1, param2], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2157,18 +2595,24 @@ WykopAPI.prototype.voteEntry  = function (param2, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Entries", "Vote", [param1, param2], api_params, null, function(error, response, body) {
+		apiRequest("Entries", "Vote", [param1, param2], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2182,18 +2626,24 @@ WykopAPI.prototype.voteEntryComment  = function (param2, param3, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Entries", "Vote", [param1, param2, param3], api_params, null, function(error, response, body) {
+		apiRequest("Entries", "Vote", [param1, param2, param3], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2207,18 +2657,24 @@ WykopAPI.prototype.unvoteEntry = function (param2, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Entries", "Unvote", [param1, param2], api_params, null, function(error, response, body) {
+		apiRequest("Entries", "Unvote", [param1, param2], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2232,18 +2688,24 @@ WykopAPI.prototype.unvoteEntryComment  = function (param2, param3, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Entries", "Vote", [param1, param2, param3], api_params, null, function(error, response, body) {
+		apiRequest("Entries", "Vote", [param1, param2, param3], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2257,18 +2719,24 @@ WykopAPI.prototype.favoriteEntry = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Entries", "Favorite", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Entries", "Favorite", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2296,18 +2764,24 @@ WykopAPI.prototype.getRank = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Rank", "Index", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Rank", "Index", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2334,18 +2808,24 @@ WykopAPI.prototype.getObservatoryVotes = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Observatory", "Votes", null, api_params, null, function(error, response, body) {
+		apiRequest("Observatory", "Votes", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2357,18 +2837,24 @@ WykopAPI.prototype.getObservatoryComments = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Observatory", "Comments", null, api_params, null, function(error, response, body) {
+		apiRequest("Observatory", "Comments", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2380,18 +2866,24 @@ WykopAPI.prototype.getObservatoryEntries = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Observatory", "Entries", null, api_params, null, function(error, response, body) {
+		apiRequest("Observatory", "Entries", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2403,18 +2895,24 @@ WykopAPI.prototype.getObservatoryEntresComments = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Observatory", "EntriesComments", null, api_params, null, function(error, response, body) {
+		apiRequest("Observatory", "EntriesComments", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2442,18 +2940,24 @@ WykopAPI.prototype.getFavorites = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Favorites", "Index", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Favorites", "Index", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2465,18 +2969,24 @@ WykopAPI.prototype.getFavoritesComments = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Favorites", "Comments", null, api_params, null, function(error, response, body) {
+		apiRequest("Favorites", "Comments", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2488,18 +2998,24 @@ WykopAPI.prototype.getFavoritesEntries = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Favorites", "Entries", null, api_params, null, function(error, response, body) {
+		apiRequest("Favorites", "Entries", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2511,18 +3027,24 @@ WykopAPI.prototype.getFavoritesLists = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Favorites", "Lists", null, api_params, null, function(error, response, body) {
+		apiRequest("Favorites", "Lists", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2550,18 +3072,24 @@ WykopAPI.prototype.getStream = function (page,callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Stream", "Index", null, api_params, null, function(error, response, body) {
+		apiRequest("Stream", "Index", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2573,18 +3101,24 @@ WykopAPI.prototype.getStreamHot = function (page, period, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Stream", "Hot", null, api_params, null, function(error, response, body) {
+		apiRequest("Stream", "Hot", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2612,18 +3146,24 @@ WykopAPI.prototype.getTagIndex = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Tag", "Index", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Tag", "Index", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2636,18 +3176,24 @@ WykopAPI.prototype.getTagLinks = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Tag", "Links", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Tag", "Links", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2660,18 +3206,24 @@ WykopAPI.prototype.getTagEntries = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Tag", "Entries", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Tag", "Entries", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2684,18 +3236,24 @@ WykopAPI.prototype.tagObserve = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Tag", "Observe", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Tag", "Observe", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2708,18 +3266,24 @@ WykopAPI.prototype.tagUnobserve = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Tag", "Unobserve", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Tag", "Unobserve", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2732,18 +3296,24 @@ WykopAPI.prototype.tagBlock = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Tag", "Block", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Tag", "Block", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2756,18 +3326,24 @@ WykopAPI.prototype.tagUnlock = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Tag", "Unblock", [param1], api_params, null, function(error, response, body) {
+		apiRequest("Tag", "Unblock", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2794,18 +3370,24 @@ WykopAPI.prototype.getConversationsList = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("PM", "ConversationsList", null, api_params, null, function(error, response, body) {
+		apiRequest("PM", "ConversationsList", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2818,18 +3400,24 @@ WykopAPI.prototype.getConversation = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("PM", "Conversation", [param1], api_params, null, function(error, response, body) {
+		apiRequest("PM", "Conversation", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2842,18 +3430,24 @@ WykopAPI.prototype.sendMessage = function (param1, body, embed, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("PM", "SendMessage", [param1], api_params, {body:body,embed:embed}, function(error, response, body) {
+		apiRequest("PM", "SendMessage", [param1], api_params, {body:body,embed:embed}, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2866,18 +3460,24 @@ WykopAPI.prototype.deleteConversation = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("PM", "DeleteConversation", [param1], api_params, null, function(error, response, body) {
+		apiRequest("PM", "DeleteConversation", [param1], api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2905,18 +3505,24 @@ WykopAPI.prototype.getTagsList = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest("Tags", "Index", null, api_params, null, function(error, response, body) {
+		apiRequest("Tags", "Index", null, api_params, null, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
@@ -2929,7 +3535,7 @@ WykopAPI.prototype.getTagsList = function (callback) {
 
 
 
-// full request
+// full request, nie testowałem
 
 WykopAPI.prototype.request = function(rtype, rmethod, rmethod_params, api_params, post_params, callback) {
 
@@ -2937,18 +3543,24 @@ WykopAPI.prototype.request = function(rtype, rmethod, rmethod_params, api_params
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(rtype, rmethod, rmethod_params, api_params, post_params, function(error, response, body) {
+		apiRequest(rtype, rmethod, rmethod_params, api_params, post_params, function(error, body) {
 
-			if (error) {
-				reject(error);
-			} else if (!(/^2/.test("" + response.statusCode))) {
-				reject(response.statusCode);
-			} else if (body.error) {
-				reject(body.error);
-			} else fulfill(body);
+			if (callback) {
 
-			if (callback) return callback(error, response, body);
+				return callback(error, body);
 
+			} else {
+
+				if (error) {
+
+					reject(error);
+
+				} else {
+
+					fulfill(body);
+
+				}
+			}
 		});
 	});
 };
