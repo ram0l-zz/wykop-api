@@ -7,9 +7,9 @@ var WykopAPI = require('./wykop-api.js');
 
 var api1 = new WykopAPI(appkey, secretkey); // opcjonalnie (appkey, secretkey, oputput, format)
 
-api.authenticate(accountkey, function(error, body) {
+api1.authenticate(accountkey, function(error, body) {
 	if (!error) {
-    	api.addEntry(body, embed, function(error, body) {
+    	api1.addEntry(body, embed, function(error, body) {
     		// 
     	});
   	};
@@ -22,9 +22,9 @@ var WykopAPI = require('./wykop-api.js');
 
 var api2 = new WykopAPI(appkey, secretkey); // opcjonalnie (appkey, secretkey, oputput, format)
 
-api.authenticate(accountkey).then(function(res1) {
+api2.authenticate(accountkey).then(function(res1) {
         console.log(res1);
-        return api.addEntry(body, embed);
+        return api2.addEntry(body, embed);
     })
     .then(function(res2) {
         console.log(res2);
