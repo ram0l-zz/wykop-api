@@ -84,4 +84,197 @@ http://www.wykop.pl/dla-programistow/dokumentacja/
 | Upcoming | getLinksUpcoming | *page | *sort |  |  |
 
 
-in progress
+### Popular
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Promoted | getPopularPromoted |  |  |  |  |
+| Upcoming | getPopularUpcoming |  |  |  |  |
+
+
+### Profile
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Index | getProfile | nazw. użytk. | *page |  |  |
+| Added | getProfileLinks | nazw. użytk. | *page |  |  |
+| Published | getProfilePublished | nazw. użytk. | *page |  |  |
+| Commented | getProfileCommented | nazw. użytk. | *page |  |  |
+| Digged | getProfileDigged | nazw. użytk. | *page |  |  |
+| Buried | getProfileBuried | nazw. użytk. | *page |  |  |
+| Observe | observeProfile | nazw. użytk. |  |  |  |
+| Unobserve | unobserveProfile | nazw. użytk. |  |  |  |
+| Block | blockProfile | nazw. użytk. |  |  |  |
+| Unblock | unblockProfile | nazw. użytk. |  |  |  |
+| Followers | getProfileFollowers | nazw. użytk. | *page |  |  |
+| Followed | getProfileFollowed | nazw. użytk. | *page |  |  |
+| Favorites | getProfileFavorites | nazw. użytk. | *page |  |  |
+| Entries | getProfileEntries | nazw. użytk. | *page |  |  |
+| EntriesComments | getProfileEntriesComments | nazw. użytk. | *page |  |  |
+| Related | getProfileRelatedLinks | nazw. użytk. | *page |  |  |
+
+
+### Search
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Promoted | getPopularPromoted |  |  |  |  |
+| Upcoming | getPopularUpcoming |  |  |  |  |
+| Index | search | question |  |  |  |
+| Links | searchLinks | {} | *page |  |  |
+| Entries | searchEntries | {} | *page |  |  |
+| Profiles | searchProfiles | {} | *page |  |  |
+
+
+### User
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Login | login | *accountkey |  |  |  |
+| Favorites | userFavorites |  |  |  |  |
+| Observed | userObserved |  |  |  |  |
+| Tags | userObservedTags |  |  |  |  |
+| Connect | getConnectUrl | url |  |  |  |
+|  | getConnectData | ?? |  |  |  |
+
+
+### Top
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Index | getTop | YYYY |  |  |  |
+| Date | getTopMonth | YYYY | month(1-12) | *page |  |
+| Hits | getTopHits |  |  |  |  |
+
+
+### Add
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Index | addLink | YYYY |  |  |  |
+
+### Related
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Plus | plusRelated | id linku | id powiąz. |  |  |
+| Minus | minusRelated | id linku | id powiąz. |  |  |
+| Add | addRelated | id linku | {} |  |  |
+
+
+### Mywykop
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Index | getMywykop | *page |  |  |  |
+| Tags | getMywykopTags | *page |  |  |  |
+| Users | getMywykopUsers | *page |  |  |  |
+| Observing | getMywykopObserving | *page |  |  |  |
+| Mine | getMywykopMine | *page |  |  |  |
+| Received | getMywykopReceived | *page |  |  |  |
+| Notifications | getNotifications | *page |  |  |  |
+| NotificationsCount | getNotificationsCount |  |  |  |  |
+| HashTagsNotifications | getHashtagsNotifications | *page |  |  |  |
+| HashTagsNotificationsCount | getHashtagsNotificationsCount |  |  |  |  |
+| ReadHashTagsNotifications | readHashtagsNotifications |  |  |  |  |
+| MarkAsReadNotification | markAsReadNotification | id powiadom. |  |  |  |
+
+
+### Entries
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Index | getEntry | id wpisu |  |  |  |
+| Add | addEntry | body | *embed(url/file) |  |  |
+| Edit | editEntry | body| *embed(url/file) |  |  |
+| Delete | deleteEntry | id wpisu |  |  |  |
+| AddComment | addEntryComment | id wpisu | body | *embed(url/file) |  |
+| EditComment | editEntryComment | id wpisu | id koment. | body | *embed(url/file) |
+| DeleteComment | deleteEntryComment | id wpisu | id koment. |  |  |
+| Vote | voteEntry | id wpisu |  |  |  |
+|  | voteEntryComment | id wpisu | id koment. |  |  |
+| Unvote | unvoteEntry | id wpisu |  |  |  |
+|  | unvoteEntryComment | id wpisu | id koment. |  |  |
+| Favorite | favoriteEntry | id wpisu |  |  |  |
+
+
+### Rank
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Index | getRank | *order |  |  |  |
+
+
+### Observatory
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Votes | getObservatoryVotes |  |  |  |  |
+| Comments | getObservatoryComments |  |  |  |  |
+| Entries | getObservatoryEntries |  |  |  |  |
+| EntriesComments | getObservatoryEntresComments |  |  |  |  |
+
+
+### Favorites
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Index | getFavorites | id listy |  |  |  |
+| Comments | getFavoritesComments |  |  |  |  |
+| Entries | getFavoritesEntries |  |  |  |  |
+| Lists | getFavoritesLists |  |  |  |  |
+
+
+### Stream
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Index | getStream | *page |  |  |  |
+| Hot | getStreamHot | *page |  |  |  |
+
+
+### Tag
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Index | getTagIndex | nazw. tagu | *page |  |  |
+| Links | getTagLinks | nazw. tagu | *page |  |  |
+| Entries | getTagEntries | nazw. tagu | *page |  |  |
+| Observe | observeTag | nazw. tagu |  |  |  |
+| Unobserve | unobserveTag | nazw. tagu |  |  |  |
+| Block | blockTag | nazw. tagu |  |  |  |
+| Unblock | unblockTag | nazw. tagu |  |  |  |
+
+
+### PM
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| ConversationsList | getConversationsList |  |  |  |  |
+| Conversation | getConversation | nazwa użytk. |  |  |  |
+| SendMessage | sendMessage | nazwa użytk. | body | *embed(url/file) |  |
+| DeleteConversation | deleteConversation | nazwa użytk. |  |  |  |
+
+
+### Tags
+
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
+| Index | getTagsList |  |  |  |  |
+
