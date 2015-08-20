@@ -45,6 +45,8 @@ api2.authenticate(accountkey).then(function(res1) {
 ## Metody
 http://www.wykop.pl/dla-programistow/dokumentacja/
 
+*param - nieobowiązkowe
+
 ### Comments
 
 | Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
@@ -95,25 +97,25 @@ http://www.wykop.pl/dla-programistow/dokumentacja/
 
 ### Profile
 
-| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
-| Index | getProfile | nazw. użytk. | *page |  |  |
-| Added | getProfileLinks | nazw. użytk. | *page |  |  |
-| Published | getProfilePublished | nazw. użytk. | *page |  |  |
-| Commented | getProfileCommented | nazw. użytk. | *page |  |  |
-| Digged | getProfileDigged | nazw. użytk. | *page |  |  |
-| Buried | getProfileBuried | nazw. użytk. | *page |  |  |
-| Observe | observeProfile | nazw. użytk. |  |  |  |
-| Unobserve | unobserveProfile | nazw. użytk. |  |  |  |
-| Block | blockProfile | nazw. użytk. |  |  |  |
-| Unblock | unblockProfile | nazw. użytk. |  |  |  |
-| Followers | getProfileFollowers | nazw. użytk. | *page |  |  |
-| Followed | getProfileFollowed | nazw. użytk. | *page |  |  |
-| Favorites | getProfileFavorites | nazw. użytk. | *page |  |  |
-| Entries | getProfileEntries | nazw. użytk. | *page |  |  |
-| EntriesComments | getProfileEntriesComments | nazw. użytk. | *page |  |  |
-| Related | getProfileRelatedLinks | nazw. użytk. | *page |  |  |
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** |
+| Index | getProfile | nazw. użytk. | *page |  |  
+| Added | getProfileLinks | nazw. użytk. | *page |  |  
+| Published | getProfilePublished | nazw. użytk. | *page |  |  
+| Commented | getProfileCommented | nazw. użytk. | *page |  |  
+| Digged | getProfileDigged | nazw. użytk. | *page |  |  
+| Buried | getProfileBuried | nazw. użytk. | *page |  |  
+| Observe | observeProfile | nazw. użytk. |  |  |  
+| Unobserve | unobserveProfile | nazw. użytk. |  |  |  
+| Block | blockProfile | nazw. użytk. |  |  |  
+| Unblock | unblockProfile | nazw. użytk. |  |  |  
+| Followers | getProfileFollowers | nazw. użytk. | *page |  |  
+| Followed | getProfileFollowed | nazw. użytk. | *page |  |  
+| Favorites | getProfileFavorites | nazw. użytk. | *page |  |  
+| Entries | getProfileEntries | nazw. użytk. | *page |  |  
+| EntriesComments | getProfileEntriesComments | nazw. użytk. | *page |  |  
+| Related | getProfileRelatedLinks | nazw. użytk. | *page |  |  
 
 
 ### Search
@@ -157,7 +159,7 @@ http://www.wykop.pl/dla-programistow/dokumentacja/
 | Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 |               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
-| Index | addLink | YYYY |  |  |  |
+| Index | addLink | grupa | {} |  |  |
 
 ### Related
 
@@ -171,21 +173,21 @@ http://www.wykop.pl/dla-programistow/dokumentacja/
 
 ### Mywykop
 
-| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
-| Index | getMywykop | *page |  |  |  |
-| Tags | getMywykopTags | *page |  |  |  |
-| Users | getMywykopUsers | *page |  |  |  |
-| Observing | getMywykopObserving | *page |  |  |  |
-| Mine | getMywykopMine | *page |  |  |  |
-| Received | getMywykopReceived | *page |  |  |  |
-| Notifications | getNotifications | *page |  |  |  |
-| NotificationsCount | getNotificationsCount |  |  |  |  |
-| HashTagsNotifications | getHashtagsNotifications | *page |  |  |  |
-| HashTagsNotificationsCount | getHashtagsNotificationsCount |  |  |  |  |
-| ReadHashTagsNotifications | readHashtagsNotifications |  |  |  |  |
-| MarkAsReadNotification | markAsReadNotification | id powiadom. |  |  |  |
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  
+| ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | 
+| Index | getMywykop | *page |  |  
+| Tags | getMywykopTags | *page |  |  
+| Users | getMywykopUsers | *page |  |  
+| Observing | getMywykopObserving | *page |  |  
+| Mine | getMywykopMine | *page |  |  
+| Received | getMywykopReceived | *page |  |  
+| Notifications | getNotifications | *page |  |  
+| NotificationsCount | getNotificationsCount |  |  |  
+| HashTagsNotifications | getHashtagsNotifications | *page |  |  
+| HashTagsNotificationsCount | getHashtagsNotificationsCount |  |  |  
+| ReadHashTagsNotifications | readHashtagsNotifications |  |  |  
+| MarkAsReadNotification | markAsReadNotification | id powiadom. |  |  
 
 
 ### Entries
@@ -217,13 +219,13 @@ http://www.wykop.pl/dla-programistow/dokumentacja/
 
 ### Observatory
 
-| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
-| Votes | getObservatoryVotes |  |  |  |  |
-| Comments | getObservatoryComments |  |  |  |  |
-| Entries | getObservatoryEntries |  |  |  |  |
-| EntriesComments | getObservatoryEntresComments |  |  |  |  |
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  
+| ------------- | ------------- | ------------- | ------------- | ------------- | 
+|               |                |  **param1**       |  **param2** | **paramN** |
+| Votes | getObservatoryVotes |  |  |  |  
+| Comments | getObservatoryComments |  |  |  |  
+| Entries | getObservatoryEntries |  |  |  |  
+| EntriesComments | getObservatoryEntresComments |  |  |  |  
 
 
 ### Favorites
@@ -262,13 +264,13 @@ http://www.wykop.pl/dla-programistow/dokumentacja/
 
 ### PM
 
-| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-|               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
-| ConversationsList | getConversationsList |  |  |  |  |
-| Conversation | getConversation | nazwa użytk. |  |  |  |
-| SendMessage | sendMessage | nazwa użytk. | body | *embed(url/file) |  |
-| DeleteConversation | deleteConversation | nazwa użytk. |  |  |  |
+| Metoda API    | Metoda SDK     | Parametry SDK |   |  |  
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |                |  **param1**       |  **param2** | **paramN** |
+| ConversationsList | getConversationsList |  |  |  |  
+| Conversation | getConversation | nazwa użytk. |  |  |  
+| SendMessage | sendMessage | nazwa użytk. | body | *embed(url/file) |  
+| DeleteConversation | deleteConversation | nazwa użytk. |  |  |  
 
 
 ### Tags
