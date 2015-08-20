@@ -2649,6 +2649,7 @@ WykopAPI.prototype.voteEntryComment  = function (param2, param3, callback) {
 };
 
 
+// do poprawy, scali metody w jedną - "vote"
 WykopAPI.prototype.unvoteEntry = function (param2, callback) {
 
 	if (arguments.length < 1) throw error;
@@ -3229,7 +3230,7 @@ WykopAPI.prototype.getTagEntries = function (param1, page, callback) {
 };
 
 
-WykopAPI.prototype.tagObserve = function (param1, callback) {
+WykopAPI.prototype.observeTag = function (param1, callback) {
 
 	if (arguments.length < 1) throw error;
 	var api_params = new DefaultApiParams(this);
@@ -3259,7 +3260,7 @@ WykopAPI.prototype.tagObserve = function (param1, callback) {
 };
 
 
-WykopAPI.prototype.tagUnobserve = function (param1, callback) {
+WykopAPI.prototype.unobserveTag = function (param1, callback) {
 
 	if (arguments.length < 1) throw error;
 	var api_params = new DefaultApiParams(this);
@@ -3289,7 +3290,7 @@ WykopAPI.prototype.tagUnobserve = function (param1, callback) {
 };
 
 
-WykopAPI.prototype.tagBlock = function (param1, callback) {
+WykopAPI.prototype.blockTag = function (param1, callback) {
 
 	if (arguments.length < 1) throw error;
 	var api_params = new DefaultApiParams(this);
@@ -3319,7 +3320,7 @@ WykopAPI.prototype.tagBlock = function (param1, callback) {
 };
 
 
-WykopAPI.prototype.tagUnlock = function (param1, callback) {
+WykopAPI.prototype.unblockTag = function (param1, callback) {
 
 	if (arguments.length < 1) throw error;
 	var api_params = new DefaultApiParams(this);
