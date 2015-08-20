@@ -1,0 +1,35 @@
+{
+  "name": "wykop-api",
+  "version": "0.0.1",
+  "description": "Wykop.pl API",
+  "main": "wykop-api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bnt44/wykop-api"
+  },
+  "keywords": [
+    "wykop",
+    "wykop-api",
+    "wykop-sdk"
+  ],
+  "author": {
+    "name": "bnt44",
+    "email": "bnt44_npm@wp.pl"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bnt44/wykop-api/issues"
+  },
+  "homepage": "https://github.com/bnt44/wykop-api",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "bluebird": "^2.9.34",
+    "md5": "^2.0.0",
+    "request": "^2.60.0"
+  }
+}
