@@ -5,11 +5,11 @@ Przykładowe użycie:
 var WykopAPI = require('./wykop-api.js');
 
 
-var api = new WykopAPI(appkey, secretkey);
+var api1 = new WykopAPI(appkey, secretkey); // opcjonalnie (appkey, secretkey, oputput, format)
 
-api.authenticate(accountkey, function(error,response,body) {
-	if (!error && response.statusCode === 200 && !body.error) {
-    	api.addEntry(body, embed, function(error, response, body) {
+api.authenticate(accountkey, function(error, body) {
+	if (!error) {
+    	api.addEntry(body, embed, function(error, body) {
     		// 
     	});
   	};
@@ -20,7 +20,7 @@ z Promises
 var WykopAPI = require('./wykop-api.js');
 
 
-var api = new WykopAPI(appkey, secretkey);
+var api2 = new WykopAPI(appkey, secretkey); // opcjonalnie (appkey, secretkey, oputput, format)
 
 api.authenticate(accountkey).then(function(res1) {
         console.log(res1);
