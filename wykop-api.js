@@ -10,7 +10,7 @@ var apiRequest = function (self, rtype, rmethod, rmethod_params, callback) {
 
 	if (!rmethod_params) { rmethod_params = []; }
 
-	var apiParams = self.apiParams || {};
+	var apiParams  = self.apiParams  || {};
 	var postParams = self.postParams || null;
 
 	delete self.apiParams;
@@ -44,6 +44,8 @@ var apiRequest = function (self, rtype, rmethod, rmethod_params, callback) {
 	options.method = (!postParams ? "GET" : "POST");
 
 	options.json = true;
+
+	options.timeout = self.timeout * 1000 || 30000;
 
 
 	// POST PARAMS
@@ -113,7 +115,7 @@ var apiRequest = function (self, rtype, rmethod, rmethod_params, callback) {
 	
 
 	options.headers = {
-		"User-Agent": "WykopWebAgent",
+		"User-Agent": self.useragent || "wykop-api sdk Nodejs",
 		"apisign": md5(secretkey + options.uri + allPOSTValues.toString())
 	};
 
@@ -178,14 +180,17 @@ MMMMMMMM               MMMMMMMMEEEEEEEEEEEEEEEEEEEEEE      TTTTTTTTTTT          
 
 
 
-var WykopAPI = function (appkey, secretkey, output, format) {
+var WykopAPI = function (appkey, secretkey, options) {
 
 	if (arguments.length < 2) throw error;
 
-	this.appkey = appkey;
+	this.appkey    = appkey;
 	this.secretkey = secretkey;
-	this.output = output; // "clear"
-	this.format = format; // "jsonp" || "xml"
+
+	this.output    = options.output;
+	this.format    = options.format;
+	this.timeout   = options.timeout;
+	this.useragent = options.useragent;
 
 };
 
