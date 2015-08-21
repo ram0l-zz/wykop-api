@@ -5,13 +5,13 @@ var request = require("request");
 
 
 
-var apiRequest = function (self, rtype, rmethod, rmethod_params, api_params, post_params, callback) {
+var apiRequest = function (self, rtype, rmethod, rmethod_params, apiParams, postParams, callback) {
 
 
 	if (!rmethod_params) { rmethod_params = []; }
-	if (!api_params) { api_params = {}; }
+	if (!apiParams) { apiParams = {}; }
 
-	// api_params
+	// apiParams
 	var param1 = (rmethod_params[0] ? rmethod_params[0] + "/" : "");
 	var param2 = (rmethod_params[1] ? rmethod_params[1] + "/" : "");
 	var param3 = (rmethod_params[2] ? rmethod_params[2] + "/" : "");
@@ -20,15 +20,15 @@ var apiRequest = function (self, rtype, rmethod, rmethod_params, api_params, pos
 	var appkey     = self.appkey;
 	var secretkey  = self.secretkey;
 
-	var userkey  = (self.userkey        ? "userkey,"  + self.userkey        + "," : "");
-	var page     = (api_params.page     ? "page,"     + api_params.page     + "," : "");
-	var sort     = (api_params.sort     ? "sort,"     + api_params.sort     + "," : "");
-	var period   = (api_params.period   ? "period,"   + api_params.period   + "," : "");
-	var group    = (api_params.group    ? "group,"    + api_params.group    + "," : "");
-	var redirect = (api_params.redirect ? "redirect," + api_params.redirect + "," : "");
-	var secure   = (api_params.secure   ? "secure,"   + api_params.secure   + "," : "");
-	var output   = (self.output   ? "output,"   + self.output   + "," : "");
-	var format   = (self.format   ? "format,"   + self.format   + "," : "");
+	var userkey  = (self.userkey       ? "userkey,"  + self.userkey       + "," : "");
+	var page     = (apiParams.page     ? "page,"     + apiParams.page     + "," : "");
+	var sort     = (apiParams.sort     ? "sort,"     + apiParams.sort     + "," : "");
+	var period   = (apiParams.period   ? "period,"   + apiParams.period   + "," : "");
+	var group    = (apiParams.group    ? "group,"    + apiParams.group    + "," : "");
+	var redirect = (apiParams.redirect ? "redirect," + apiParams.redirect + "," : "");
+	var secure   = (apiParams.secure   ? "secure,"   + apiParams.secure   + "," : "");
+	var output   = (self.output        ? "output,"   + self.output        + "," : "");
+	var format   = (self.format        ? "format,"   + self.format        + "," : "");
 
 
 
@@ -38,7 +38,7 @@ var apiRequest = function (self, rtype, rmethod, rmethod_params, api_params, pos
 
 	options.uri = "http://a.wykop.pl/" + rtype + "/" + rmethod + "/" + param1 + param2 + param3 + "appkey," + appkey + "," + userkey + page + sort + period + group + output + format + redirect + secure;
 
-	options.method = (!post_params ? "GET" : "POST");
+	options.method = (!postParams ? "GET" : "POST");
 
 	options.json = true;
 
@@ -47,19 +47,19 @@ var apiRequest = function (self, rtype, rmethod, rmethod_params, api_params, pos
 
 	if (options.method === "POST") {
 
-		if (typeof post_params.embed === "string" || post_params.embed === null || post_params.embed === undefined) {
+		if (typeof postParams.embed === "string" || postParams.embed === null || postParams.embed === undefined) {
 
 			options.form = {};
 
-			for (var prop in post_params) {
+			for (var prop in postParams) {
 
-				if (post_params.hasOwnProperty(prop)) {
+				if (postParams.hasOwnProperty(prop)) {
 
-					if (post_params[prop] === null || post_params[prop] === undefined || post_params[prop] === "") {
+					if (postParams[prop] === null || postParams[prop] === undefined || postParams[prop] === "") {
 						// do nothing
 					} else {
 
-						options.form[prop] = post_params[prop];
+						options.form[prop] = postParams[prop];
 
 					}
 
@@ -73,19 +73,19 @@ var apiRequest = function (self, rtype, rmethod, rmethod_params, api_params, pos
 
 			});
 
-		} else if (typeof post_params.embed === "object") {
+		} else if (typeof postParams.embed === "object") {
 
 			options.formData = {};
 
-			for (var prop in post_params) {
+			for (var prop in postParams) {
 
-				if (post_params.hasOwnProperty(prop)) {
+				if (postParams.hasOwnProperty(prop)) {
 
-					if (post_params[prop] === null || post_params[prop] === undefined || post_params[prop] === "") {
+					if (postParams[prop] === null || postParams[prop] === undefined || postParams[prop] === "") {
 						// do nothing
 					} else {
 
-						options.formData[prop] = post_params[prop];
+						options.formData[prop] = postParams[prop];
 
 					}
 
@@ -737,11 +737,11 @@ WykopAPI.prototype.favoriteLink = function (param1, callback) {
 WykopAPI.prototype.getLinksPromoted = function (page, sort, callback) {
 
 	var self = this;
-	var api_params = new DefaultApiParams(page, sort);
+	var apiParams = new DefaultApiParams(page, sort);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Links", "Promoted", null, api_params, null, function(error, body) {
+		apiRequest(self, "Links", "Promoted", null, apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -767,11 +767,11 @@ WykopAPI.prototype.getLinksPromoted = function (page, sort, callback) {
 WykopAPI.prototype.getLinksUpcoming = function (page, sort, callback) {
 
 	var self = this;
-	var api_params = new DefaultApiParams(page, sort);
+	var apiParams = new DefaultApiParams(page, sort);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Links", "Upcoming", null, api_params, null, function(error, body) {
+		apiRequest(self, "Links", "Upcoming", null, apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -912,11 +912,11 @@ WykopAPI.prototype.getProfileLinks = function (param1, page, callback) {
 
 	if (arguments.length < 1) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Added", [param1], api_params, null, function(error, body) {
+		apiRequest(self, "Profile", "Added", [param1], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -943,11 +943,11 @@ WykopAPI.prototype.getProfilePublished = function (param1, page, callback) {
 
 	if (arguments.length < 1) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Published", [param1], api_params, null, function(error, body) {
+		apiRequest(self, "Profile", "Published", [param1], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -974,11 +974,11 @@ WykopAPI.prototype.getProfileCommented = function (param1, page, callback) {
 
 	if (arguments.length < 1) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Commented", [param1], api_params, null, function(error, body) {
+		apiRequest(self, "Profile", "Commented", [param1], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -1005,11 +1005,11 @@ WykopAPI.prototype.getProfileDigged = function (param1, page, callback) {
 
 	if (arguments.length < 1) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Digged", [param1], api_params, null, function(error, body) {
+		apiRequest(self, "Profile", "Digged", [param1], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -1036,11 +1036,11 @@ WykopAPI.prototype.getProfileBuried = function (param1, page, callback) {
 
 	if (arguments.length < 1) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Buried", [param1], api_params, null, function(error, body) {
+		apiRequest(self, "Profile", "Buried", [param1], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -1187,11 +1187,11 @@ WykopAPI.prototype.getProfileFollowers = function (param1, page, callback) {
 
 	if (arguments.length < 1) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Followers", [param1], api_params, null, function(error, body) {
+		apiRequest(self, "Profile", "Followers", [param1], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -1218,11 +1218,11 @@ WykopAPI.prototype.getProfileFollowed = function (param1, page, callback) {
 
 	if (arguments.length < 1) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Followed", [param1], api_params, null, function(error, body) {
+		apiRequest(self, "Profile", "Followed", [param1], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -1249,11 +1249,11 @@ WykopAPI.prototype.getProfileFavorites = function (param1, param2, page, callbac
 
 	if (arguments.length < 2) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Favorites", [param1, param2], api_params, null, function(error, body) {
+		apiRequest(self, "Profile", "Favorites", [param1, param2], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -1280,11 +1280,11 @@ WykopAPI.prototype.getProfileEntries = function (param1, page, callback) {
 
 	if (arguments.length < 1) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Entries", [param1], api_params, null, function(error, body) {
+		apiRequest(self, "Profile", "Entries", [param1], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -1311,11 +1311,11 @@ WykopAPI.prototype.getProfileEntriesComments = function (param1, page, callback)
 
 	if (arguments.length < 1) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "EntriesComments", [param1], api_params, null, function(error, body) {
+		apiRequest(self, "Profile", "EntriesComments", [param1], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -1342,11 +1342,11 @@ WykopAPI.prototype.getProfileRelatedLinks = function (param1, page, callback) {
 
 	if (arguments.length < 1) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Related", [param1], api_params, null, function(error, body) {
+		apiRequest(self, "Profile", "Related", [param1], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -1397,11 +1397,11 @@ WykopAPI.prototype.search = function (question, page, callback) {
 		postObject = {q:question};
 	}
 
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Search", "Index", null, api_params, postObject, function(error, body) {
+		apiRequest(self, "Search", "Index", null, apiParams, postObject, function(error, body) {
 
 			if (callback) {
 
@@ -1448,11 +1448,11 @@ WykopAPI.prototype.searchLinks = function (question, page, callback) {
 		postObject = {q:question};
 	}
 
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Search", "Links", null, api_params, postObject, function(error, body) {
+		apiRequest(self, "Search", "Links", null, apiParams, postObject, function(error, body) {
 
 			if (callback) {
 
@@ -1488,11 +1488,11 @@ WykopAPI.prototype.searchEntries = function (question, page, callback) {
 		postObject = {q:question};
 	}
 
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Search", "Entries", null, api_params, postObject, function(error, body) {
+		apiRequest(self, "Search", "Entries", null, apiParams, postObject, function(error, body) {
 
 			if (callback) {
 
@@ -1528,11 +1528,11 @@ WykopAPI.prototype.searchProfiles = function (question, page, callback) {
 		postObject = {q:question};
 	}
 
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Search", "Profiles", null, api_params, postObject, function(error, body) {
+		apiRequest(self, "Search", "Profiles", null, apiParams, postObject, function(error, body) {
 
 			if (callback) {
 
@@ -1762,11 +1762,11 @@ WykopAPI.prototype.getTopMonth = function (param1, param2, page, callback) {
 
 	if (arguments.length < 2) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Top", "Date", [param1,param2], api_params, null, function(error, body) {
+		apiRequest(self, "Top", "Date", [param1,param2], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -1848,11 +1848,11 @@ WykopAPI.prototype.addLink = function (group, parameters, callback) {
 
 	if (arguments.length < 2) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(null, null, group);
+	var apiParams = new DefaultApiParams(null, null, group);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Add", "Index", null, api_params, parameters, function(error, body) {
+		apiRequest(self, "Add", "Index", null, apiParams, parameters, function(error, body) {
 
 			if (callback) {
 
@@ -2007,11 +2007,11 @@ WykopAPI.prototype.addRelated = function (param1, parameters, callback) {
 WykopAPI.prototype.getMywykop = function (page, callback) {
 
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Index", null, api_params, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Index", null, apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -2037,11 +2037,11 @@ WykopAPI.prototype.getMywykop = function (page, callback) {
 WykopAPI.prototype.getMywykopTags = function (page, callback) {
 
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Tags", null, api_params, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Tags", null, apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -2067,11 +2067,11 @@ WykopAPI.prototype.getMywykopTags = function (page, callback) {
 WykopAPI.prototype.getMywykopUsers = function (page, callback) {
 
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Users", null, api_params, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Users", null, apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -2097,11 +2097,11 @@ WykopAPI.prototype.getMywykopUsers = function (page, callback) {
 WykopAPI.prototype.getMywykopObserving = function (page, callback) {
 
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Observing", null, api_params, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Observing", null, apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -2127,11 +2127,11 @@ WykopAPI.prototype.getMywykopObserving = function (page, callback) {
 WykopAPI.prototype.getMywykopMine = function (page, callback) {
 
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Mine", null, api_params, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Mine", null, apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -2157,11 +2157,11 @@ WykopAPI.prototype.getMywykopMine = function (page, callback) {
 WykopAPI.prototype.getMywykopReceived = function (page, callback) {
 
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Received", null, api_params, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Received", null, apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -2187,11 +2187,11 @@ WykopAPI.prototype.getMywykopReceived = function (page, callback) {
 WykopAPI.prototype.getNotifications = function (page, callback) {
 
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Notifications", null, api_params, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Notifications", null, apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -2246,11 +2246,11 @@ WykopAPI.prototype.getNotificationsCount = function (callback) {
 WykopAPI.prototype.getHashtagsNotifications = function (page, callback) {
 
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "HashTagsNotifications", null, api_params, null, function(error, body) {
+		apiRequest(self, "MyWykop", "HashTagsNotifications", null, apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -3100,11 +3100,11 @@ WykopAPI.prototype.getFavoritesLists = function (callback) {
 WykopAPI.prototype.getStream = function (page,callback) {
 
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Stream", "Index", null, api_params, null, function(error, body) {
+		apiRequest(self, "Stream", "Index", null, apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -3130,11 +3130,11 @@ WykopAPI.prototype.getStream = function (page,callback) {
 WykopAPI.prototype.getStreamHot = function (page, period, callback) {
 
 	var self = this;
-	var api_params = new DefaultApiParams(page, null, null, period);
+	var apiParams = new DefaultApiParams(page, null, null, period);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Stream", "Hot", null, api_params, null, function(error, body) {
+		apiRequest(self, "Stream", "Hot", null, apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -3176,11 +3176,11 @@ WykopAPI.prototype.getTagIndex = function (param1, page, callback) {
 
 	if (arguments.length < 1) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Tag", "Index", [param1], api_params, null, function(error, body) {
+		apiRequest(self, "Tag", "Index", [param1], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -3207,11 +3207,11 @@ WykopAPI.prototype.getTagLinks = function (param1, page, callback) {
 
 	if (arguments.length < 1) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Tag", "Links", [param1], api_params, null, function(error, body) {
+		apiRequest(self, "Tag", "Links", [param1], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -3238,11 +3238,11 @@ WykopAPI.prototype.getTagEntries = function (param1, page, callback) {
 
 	if (arguments.length < 1) throw error;
 	var self = this;
-	var api_params = new DefaultApiParams(page);
+	var apiParams = new DefaultApiParams(page);
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Tag", "Entries", [param1], api_params, null, function(error, body) {
+		apiRequest(self, "Tag", "Entries", [param1], apiParams, null, function(error, body) {
 
 			if (callback) {
 
@@ -3573,14 +3573,14 @@ WykopAPI.prototype.getTagsList = function (callback) {
 
 // full request, nie testowałem
 
-WykopAPI.prototype.request = function(rtype, rmethod, rmethod_params, api_params, post_params, callback) {
+WykopAPI.prototype.request = function(rtype, rmethod, rmethod_params, apiParams, postParams, callback) {
 
 	var self = this;
 	if (arguments.length < 5) throw error;
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, rtype, rmethod, rmethod_params, api_params, post_params, function(error, body) {
+		apiRequest(self, rtype, rmethod, rmethod_params, apiParams, postParams, function(error, body) {
 
 			if (callback) {
 
