@@ -5,9 +5,9 @@ var request = require("request");
 
 
 
-var apiRequest = function (self, rtype, rmethod, rmethod_params, apiParams1, postParams1, callback) {
+var apiRequest = function (self, rtype, rmethod, rmethod_params, callback) {
 
-	console.dir(self);
+
 	if (!rmethod_params) { rmethod_params = []; }
 
 	var apiParams = self.apiParams || {};
@@ -117,8 +117,7 @@ var apiRequest = function (self, rtype, rmethod, rmethod_params, apiParams1, pos
 		"apisign": md5(secretkey + options.uri + allPOSTValues.toString())
 	};
 
-	console.log(secretkey + options.uri + allPOSTValues.toString());
-	console.dir(options);
+
 	request(options, function(error, response, body) {
 
 		var errorObj, bodyObj;
@@ -201,7 +200,7 @@ WykopAPI.prototype.authenticate = function (accountkey, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "User", "Login", null, null, null, function(error, body) {
+		apiRequest(self, "User", "Login", null, function(error, body) {
 
 			if (callback) {
 
@@ -246,7 +245,7 @@ WykopAPI.prototype.addComment = function (param1, param2, body, embed, callback)
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Comments", "Add", [param1, param2], null, null, function(error, body) {
+		apiRequest(self, "Comments", "Add", [param1, param2], function(error, body) {
 
 			if (callback) {
 
@@ -277,7 +276,7 @@ WykopAPI.prototype.plusComment = function (param1, param2, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Comments", "Plus", [param1, param2], null, null, function(error, body) {
+		apiRequest(self, "Comments", "Plus", [param1, param2], function(error, body) {
 
 			if (callback) {
 
@@ -307,7 +306,7 @@ WykopAPI.prototype.minusComment = function (param1, param2, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Comments", "Minus", [param1, param2], null, null, function(error, body) {
+		apiRequest(self, "Comments", "Minus", [param1, param2], function(error, body) {
 
 			if (callback) {
 
@@ -338,7 +337,7 @@ WykopAPI.prototype.editComment = function (param1, body, embed, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Comments", "Edit", [param1], null, null, function(error, body) {
+		apiRequest(self, "Comments", "Edit", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -368,7 +367,7 @@ WykopAPI.prototype.deleteComment = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Comments", "Delete", [param1], null, null, function(error, body) {
+		apiRequest(self, "Comments", "Delete", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -411,7 +410,7 @@ WykopAPI.prototype.getLink = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Link", "Index", [param1], null, null, function(error, body) {
+		apiRequest(self, "Link", "Index", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -441,7 +440,7 @@ WykopAPI.prototype.digLink = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Link", "Dig", [param1], null, null, function(error, body) {
+		apiRequest(self, "Link", "Dig", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -471,7 +470,7 @@ WykopAPI.prototype.cancelLink = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Link", "Cancel", [param1], null, null, function(error, body) {
+		apiRequest(self, "Link", "Cancel", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -501,7 +500,7 @@ WykopAPI.prototype.buryLink = function (param1, param2, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Link", "Bury", [param1,param2], null, null, function(error, body) {
+		apiRequest(self, "Link", "Bury", [param1,param2], function(error, body) {
 
 			if (callback) {
 
@@ -531,7 +530,7 @@ WykopAPI.prototype.getLinkComments = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Link", "Comments", [param1], null, null, function(error, body) {
+		apiRequest(self, "Link", "Comments", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -561,7 +560,7 @@ WykopAPI.prototype.getLinkReports = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Link", "Reports", [param1], null, null, function(error, body) {
+		apiRequest(self, "Link", "Reports", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -591,7 +590,7 @@ WykopAPI.prototype.getLinkDigs = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Link", "Digs", [param1], null, null, function(error, body) {
+		apiRequest(self, "Link", "Digs", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -621,7 +620,7 @@ WykopAPI.prototype.getLinkRelated = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Link", "Related", [param1], null, null, function(error, body) {
+		apiRequest(self, "Link", "Related", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -650,7 +649,7 @@ WykopAPI.prototype.getLinkBuryreasons = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Link", "Buryreasons", null, null, null, function(error, body) {
+		apiRequest(self, "Link", "Buryreasons", null, function(error, body) {
 
 			if (callback) {
 
@@ -680,7 +679,7 @@ WykopAPI.prototype.observeLink = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Link", "Observe", [param1], null, null, function(error, body) {
+		apiRequest(self, "Link", "Observe", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -710,7 +709,7 @@ WykopAPI.prototype.favoriteLink = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Link", "Favorite", [param1], null, null, function(error, body) {
+		apiRequest(self, "Link", "Favorite", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -753,7 +752,7 @@ WykopAPI.prototype.getLinksPromoted = function (page, sort, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Links", "Promoted", null, null, null, function(error, body) {
+		apiRequest(self, "Links", "Promoted", null, function(error, body) {
 
 			if (callback) {
 
@@ -783,7 +782,7 @@ WykopAPI.prototype.getLinksUpcoming = function (page, sort, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Links", "Upcoming", null, apiParams, null, function(error, body) {
+		apiRequest(self, "Links", "Upcoming", null, function(error, body) {
 
 			if (callback) {
 
@@ -825,7 +824,7 @@ WykopAPI.prototype.getPopularPromoted = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Popular", "Promoted", null, null, null, function(error, body) {
+		apiRequest(self, "Popular", "Promoted", null, function(error, body) {
 
 			if (callback) {
 
@@ -854,7 +853,7 @@ WykopAPI.prototype.getPopularUpcoming = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Popular", "Upcoming", null, null, null, function(error, body) {
+		apiRequest(self, "Popular", "Upcoming", null, function(error, body) {
 
 			if (callback) {
 
@@ -897,7 +896,7 @@ WykopAPI.prototype.getProfile = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Index", [param1], null, null, function(error, body) {
+		apiRequest(self, "Profile", "Index", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -928,7 +927,7 @@ WykopAPI.prototype.getProfileLinks = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Added", [param1], apiParams, null, function(error, body) {
+		apiRequest(self, "Profile", "Added", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -959,7 +958,7 @@ WykopAPI.prototype.getProfilePublished = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Published", [param1], apiParams, null, function(error, body) {
+		apiRequest(self, "Profile", "Published", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -990,7 +989,7 @@ WykopAPI.prototype.getProfileCommented = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Commented", [param1], apiParams, null, function(error, body) {
+		apiRequest(self, "Profile", "Commented", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -1021,7 +1020,7 @@ WykopAPI.prototype.getProfileDigged = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Digged", [param1], apiParams, null, function(error, body) {
+		apiRequest(self, "Profile", "Digged", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -1052,7 +1051,7 @@ WykopAPI.prototype.getProfileBuried = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Buried", [param1], apiParams, null, function(error, body) {
+		apiRequest(self, "Profile", "Buried", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -1082,7 +1081,7 @@ WykopAPI.prototype.observeProfile = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Observe", [param1], null, null, function(error, body) {
+		apiRequest(self, "Profile", "Observe", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -1112,7 +1111,7 @@ WykopAPI.prototype.unobserveProfile = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Unobserve", [param1], null, null, function(error, body) {
+		apiRequest(self, "Profile", "Unobserve", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -1142,7 +1141,7 @@ WykopAPI.prototype.blockProfile = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Block", [param1], null, null, function(error, body) {
+		apiRequest(self, "Profile", "Block", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -1172,7 +1171,7 @@ WykopAPI.prototype.unblockProfile = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Unblock", [param1], null, null, function(error, body) {
+		apiRequest(self, "Profile", "Unblock", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -1203,7 +1202,7 @@ WykopAPI.prototype.getProfileFollowers = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Followers", [param1], null, null, function(error, body) {
+		apiRequest(self, "Profile", "Followers", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -1234,7 +1233,7 @@ WykopAPI.prototype.getProfileFollowed = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Followed", [param1], null, null, function(error, body) {
+		apiRequest(self, "Profile", "Followed", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -1265,7 +1264,7 @@ WykopAPI.prototype.getProfileFavorites = function (param1, param2, page, callbac
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Favorites", [param1, param2], null, null, function(error, body) {
+		apiRequest(self, "Profile", "Favorites", [param1, param2], function(error, body) {
 
 			if (callback) {
 
@@ -1296,7 +1295,7 @@ WykopAPI.prototype.getProfileEntries = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Entries", [param1], null, null, function(error, body) {
+		apiRequest(self, "Profile", "Entries", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -1327,7 +1326,7 @@ WykopAPI.prototype.getProfileEntriesComments = function (param1, page, callback)
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "EntriesComments", [param1], null, null, function(error, body) {
+		apiRequest(self, "Profile", "EntriesComments", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -1358,7 +1357,7 @@ WykopAPI.prototype.getProfileRelatedLinks = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Profile", "Related", [param1], null, null, function(error, body) {
+		apiRequest(self, "Profile", "Related", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -1414,7 +1413,7 @@ WykopAPI.prototype.search = function (question, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Search", "Index", null, null, null, function(error, body) {
+		apiRequest(self, "Search", "Index", null, function(error, body) {
 
 			if (callback) {
 
@@ -1466,7 +1465,7 @@ WykopAPI.prototype.searchLinks = function (question, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Search", "Links", null, null, null, function(error, body) {
+		apiRequest(self, "Search", "Links", null, function(error, body) {
 
 			if (callback) {
 
@@ -1507,7 +1506,7 @@ WykopAPI.prototype.searchEntries = function (question, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Search", "Entries", null, null, null, function(error, body) {
+		apiRequest(self, "Search", "Entries", null, function(error, body) {
 
 			if (callback) {
 
@@ -1548,7 +1547,7 @@ WykopAPI.prototype.searchProfiles = function (question, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Search", "Profiles", null, null, null, function(error, body) {
+		apiRequest(self, "Search", "Profiles", null, function(error, body) {
 
 			if (callback) {
 
@@ -1596,7 +1595,7 @@ WykopAPI.prototype.login = function (accountkey, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "User", "Login", null, null, null, function(error, body) {
+		apiRequest(self, "User", "Login", null, function(error, body) {
 
 			if (callback) {
 
@@ -1626,7 +1625,7 @@ WykopAPI.prototype.userFavorites = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "User", "Favorites", null, null, null, function(error, body) {
+		apiRequest(self, "User", "Favorites", null, function(error, body) {
 
 			if (callback) {
 
@@ -1655,7 +1654,7 @@ WykopAPI.prototype.userObserved = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "User", "Observed", null, null, null, function(error, body) {
+		apiRequest(self, "User", "Observed", null, function(error, body) {
 
 			if (callback) {
 
@@ -1684,7 +1683,7 @@ WykopAPI.prototype.userObservedTags = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "User", "Tags", null, null, null, function(error, body) {
+		apiRequest(self, "User", "Tags", null, function(error, body) {
 
 			if (callback) {
 
@@ -1753,7 +1752,7 @@ WykopAPI.prototype.getTop = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Top", "Index", [param1], null, null, function(error, body) {
+		apiRequest(self, "Top", "Index", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -1784,7 +1783,7 @@ WykopAPI.prototype.getTopMonth = function (param1, param2, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Top", "Date", [param1,param2], null, null, function(error, body) {
+		apiRequest(self, "Top", "Date", [param1,param2], function(error, body) {
 
 			if (callback) {
 
@@ -1813,7 +1812,7 @@ WykopAPI.prototype.getTopHits = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Top", "Hits", null, null, null, function(error, body) {
+		apiRequest(self, "Top", "Hits", null, function(error, body) {
 
 			if (callback) {
 
@@ -1871,7 +1870,7 @@ WykopAPI.prototype.addLink = function (group, parameters, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Add", "Index", null, null, null, function(error, body) {
+		apiRequest(self, "Add", "Index", null, function(error, body) {
 
 			if (callback) {
 
@@ -1916,7 +1915,7 @@ WykopAPI.prototype.plusRelated = function (param1, param2, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Related", "Plus", [param1, param2], null, null, function(error, body) {
+		apiRequest(self, "Related", "Plus", [param1, param2], function(error, body) {
 
 			if (callback) {
 
@@ -1946,7 +1945,7 @@ WykopAPI.prototype.minusRelated = function (param1, param2, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Related", "Minus", [param1, param2], null, null, function(error, body) {
+		apiRequest(self, "Related", "Minus", [param1, param2], function(error, body) {
 
 			if (callback) {
 
@@ -1986,7 +1985,7 @@ WykopAPI.prototype.addRelated = function (param1, parameters, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Related", "Add", [param1], null, null, function(error, body) {
+		apiRequest(self, "Related", "Add", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -2031,7 +2030,7 @@ WykopAPI.prototype.getMywykop = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Index", null, null, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Index", null, function(error, body) {
 
 			if (callback) {
 
@@ -2061,7 +2060,7 @@ WykopAPI.prototype.getMywykopTags = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Tags", null, null, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Tags", null, function(error, body) {
 
 			if (callback) {
 
@@ -2091,7 +2090,7 @@ WykopAPI.prototype.getMywykopUsers = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Users", null, null, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Users", null, function(error, body) {
 
 			if (callback) {
 
@@ -2121,7 +2120,7 @@ WykopAPI.prototype.getMywykopObserving = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Observing", null, null, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Observing", null, function(error, body) {
 
 			if (callback) {
 
@@ -2151,7 +2150,7 @@ WykopAPI.prototype.getMywykopMine = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Mine", null, null, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Mine", null, function(error, body) {
 
 			if (callback) {
 
@@ -2181,7 +2180,7 @@ WykopAPI.prototype.getMywykopReceived = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Received", null, null, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Received", null, function(error, body) {
 
 			if (callback) {
 
@@ -2211,7 +2210,7 @@ WykopAPI.prototype.getNotifications = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "Notifications", null, null, null, function(error, body) {
+		apiRequest(self, "MyWykop", "Notifications", null, function(error, body) {
 
 			if (callback) {
 
@@ -2240,7 +2239,7 @@ WykopAPI.prototype.getNotificationsCount = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "NotificationsCount", null, null, null, function(error, body) {
+		apiRequest(self, "MyWykop", "NotificationsCount", null, function(error, body) {
 
 			if (callback) {
 
@@ -2270,7 +2269,7 @@ WykopAPI.prototype.getHashtagsNotifications = function (page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "HashTagsNotifications", null, null, null, function(error, body) {
+		apiRequest(self, "MyWykop", "HashTagsNotifications", null, function(error, body) {
 
 			if (callback) {
 
@@ -2299,7 +2298,7 @@ WykopAPI.prototype.getHashtagsNotificationsCount = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "HashTagsNotificationsCount", null, null, null, function(error, body) {
+		apiRequest(self, "MyWykop", "HashTagsNotificationsCount", null, function(error, body) {
 
 			if (callback) {
 
@@ -2328,7 +2327,7 @@ WykopAPI.prototype.readNotifications = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "ReadNotifications", null, null, null, function(error, body) {
+		apiRequest(self, "MyWykop", "ReadNotifications", null, function(error, body) {
 
 			if (callback) {
 
@@ -2357,7 +2356,7 @@ WykopAPI.prototype.readHashtagsNotifications = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "ReadHashTagsNotifications", null, null, null, function(error, body) {
+		apiRequest(self, "MyWykop", "ReadHashTagsNotifications", null, function(error, body) {
 
 			if (callback) {
 
@@ -2388,7 +2387,7 @@ WykopAPI.prototype.markAsReadNotification = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "MyWykop", "MarkAsReadNotification", [param1], null, null, function(error, body) {
+		apiRequest(self, "MyWykop", "MarkAsReadNotification", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -2433,7 +2432,7 @@ WykopAPI.prototype.getEntry = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Entries", "Index", [param1], null, null, function(error, body) {
+		apiRequest(self, "Entries", "Index", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -2464,7 +2463,7 @@ WykopAPI.prototype.addEntry = function (body, embed, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Entries", "Add", null, null, null, function(error, body) {
+		apiRequest(self, "Entries", "Add", null, function(error, body) {
 
 			if (callback) {
 
@@ -2496,7 +2495,7 @@ WykopAPI.prototype.editEntry = function (param1, body, embed, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Entries", "Edit", [param1], null, null, function(error, body) {
+		apiRequest(self, "Entries", "Edit", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -2526,7 +2525,7 @@ WykopAPI.prototype.deleteEntry = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Entries", "Delete", [param1], null, null, function(error, body) {
+		apiRequest(self, "Entries", "Delete", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -2557,7 +2556,7 @@ WykopAPI.prototype.addEntryComment = function (param1, body, embed, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Entries", "AddComment", [param1], null, null, function(error, body) {
+		apiRequest(self, "Entries", "AddComment", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -2588,7 +2587,7 @@ WykopAPI.prototype.editEntryComment = function (param1, param2, body, embed, cal
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Entries", "EditComment", [param1,param2], null, null, function(error, body) {
+		apiRequest(self, "Entries", "EditComment", [param1,param2], function(error, body) {
 
 			if (callback) {
 
@@ -2618,7 +2617,7 @@ WykopAPI.prototype.deleteEntryComment = function (param1, param2, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Entries", "DeleteComment", [param1, param2], null, null, function(error, body) {
+		apiRequest(self, "Entries", "DeleteComment", [param1, param2], function(error, body) {
 
 			if (callback) {
 
@@ -2649,7 +2648,7 @@ WykopAPI.prototype.voteEntry  = function (param2, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Entries", "Vote", [param1, param2], null, null, function(error, body) {
+		apiRequest(self, "Entries", "Vote", [param1, param2], function(error, body) {
 
 			if (callback) {
 
@@ -2680,7 +2679,7 @@ WykopAPI.prototype.voteEntryComment  = function (param2, param3, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Entries", "Vote", [param1, param2, param3], null, null, function(error, body) {
+		apiRequest(self, "Entries", "Vote", [param1, param2, param3], function(error, body) {
 
 			if (callback) {
 
@@ -2711,7 +2710,7 @@ WykopAPI.prototype.unvoteEntry = function (param2, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Entries", "Unvote", [param1, param2], null, null, function(error, body) {
+		apiRequest(self, "Entries", "Unvote", [param1, param2], function(error, body) {
 
 			if (callback) {
 
@@ -2742,7 +2741,7 @@ WykopAPI.prototype.unvoteEntryComment  = function (param2, param3, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Entries", "Vote", [param1, param2, param3], null, null, function(error, body) {
+		apiRequest(self, "Entries", "Vote", [param1, param2, param3], function(error, body) {
 
 			if (callback) {
 
@@ -2773,7 +2772,7 @@ WykopAPI.prototype.favoriteEntry = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Entries", "Favorite", [param1], null, null, function(error, body) {
+		apiRequest(self, "Entries", "Favorite", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -2818,7 +2817,7 @@ WykopAPI.prototype.getRank = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Rank", "Index", [param1], null, null, function(error, body) {
+		apiRequest(self, "Rank", "Index", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -2862,7 +2861,7 @@ WykopAPI.prototype.getObservatoryVotes = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Observatory", "Votes", null, null, null, function(error, body) {
+		apiRequest(self, "Observatory", "Votes", null, function(error, body) {
 
 			if (callback) {
 
@@ -2891,7 +2890,7 @@ WykopAPI.prototype.getObservatoryComments = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Observatory", "Comments", null, null, null, function(error, body) {
+		apiRequest(self, "Observatory", "Comments", null, function(error, body) {
 
 			if (callback) {
 
@@ -2920,7 +2919,7 @@ WykopAPI.prototype.getObservatoryEntries = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Observatory", "Entries", null, null, null, function(error, body) {
+		apiRequest(self, "Observatory", "Entries", null, function(error, body) {
 
 			if (callback) {
 
@@ -2949,7 +2948,7 @@ WykopAPI.prototype.getObservatoryEntresComments = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Observatory", "EntriesComments", null, null, null, function(error, body) {
+		apiRequest(self, "Observatory", "EntriesComments", null, function(error, body) {
 
 			if (callback) {
 
@@ -2994,7 +2993,7 @@ WykopAPI.prototype.getFavorites = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Favorites", "Index", [param1], null, null, function(error, body) {
+		apiRequest(self, "Favorites", "Index", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -3023,7 +3022,7 @@ WykopAPI.prototype.getFavoritesComments = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Favorites", "Comments", null, null, null, function(error, body) {
+		apiRequest(self, "Favorites", "Comments", null, function(error, body) {
 
 			if (callback) {
 
@@ -3052,7 +3051,7 @@ WykopAPI.prototype.getFavoritesEntries = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Favorites", "Entries", null, null, null, function(error, body) {
+		apiRequest(self, "Favorites", "Entries", null, function(error, body) {
 
 			if (callback) {
 
@@ -3081,7 +3080,7 @@ WykopAPI.prototype.getFavoritesLists = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Favorites", "Lists", null, null, null, function(error, body) {
+		apiRequest(self, "Favorites", "Lists", null, function(error, body) {
 
 			if (callback) {
 
@@ -3127,7 +3126,7 @@ WykopAPI.prototype.getStream = function (page,callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Stream", "Index", null, null, null, function(error, body) {
+		apiRequest(self, "Stream", "Index", null, function(error, body) {
 
 			if (callback) {
 
@@ -3157,7 +3156,7 @@ WykopAPI.prototype.getStreamHot = function (page, period, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Stream", "Hot", null, null, null, function(error, body) {
+		apiRequest(self, "Stream", "Hot", null, function(error, body) {
 
 			if (callback) {
 
@@ -3203,7 +3202,7 @@ WykopAPI.prototype.getTagIndex = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Tag", "Index", [param1], null, null, function(error, body) {
+		apiRequest(self, "Tag", "Index", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -3234,7 +3233,7 @@ WykopAPI.prototype.getTagLinks = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Tag", "Links", [param1], null, null, function(error, body) {
+		apiRequest(self, "Tag", "Links", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -3265,7 +3264,7 @@ WykopAPI.prototype.getTagEntries = function (param1, page, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Tag", "Entries", [param1], null, null, function(error, body) {
+		apiRequest(self, "Tag", "Entries", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -3295,7 +3294,7 @@ WykopAPI.prototype.observeTag = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Tag", "Observe", [param1], null, null, function(error, body) {
+		apiRequest(self, "Tag", "Observe", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -3325,7 +3324,7 @@ WykopAPI.prototype.unobserveTag = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Tag", "Unobserve", [param1], null, null, function(error, body) {
+		apiRequest(self, "Tag", "Unobserve", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -3355,7 +3354,7 @@ WykopAPI.prototype.blockTag = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Tag", "Block", [param1], null, null, function(error, body) {
+		apiRequest(self, "Tag", "Block", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -3385,7 +3384,7 @@ WykopAPI.prototype.unblockTag = function (param1, callback) {
 	
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Tag", "Unblock", [param1], null, null, function(error, body) {
+		apiRequest(self, "Tag", "Unblock", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -3429,7 +3428,7 @@ WykopAPI.prototype.getConversationsList = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "PM", "ConversationsList", null, null, null, function(error, body) {
+		apiRequest(self, "PM", "ConversationsList", null, function(error, body) {
 
 			if (callback) {
 
@@ -3459,7 +3458,7 @@ WykopAPI.prototype.getConversation = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "PM", "Conversation", [param1], null, null, function(error, body) {
+		apiRequest(self, "PM", "Conversation", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -3490,7 +3489,7 @@ WykopAPI.prototype.sendMessage = function (param1, body, embed, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "PM", "SendMessage", [param1], null, null, function(error, body) {
+		apiRequest(self, "PM", "SendMessage", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -3520,7 +3519,7 @@ WykopAPI.prototype.deleteConversation = function (param1, callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "PM", "DeleteConversation", [param1], null, null, function(error, body) {
+		apiRequest(self, "PM", "DeleteConversation", [param1], function(error, body) {
 
 			if (callback) {
 
@@ -3565,7 +3564,7 @@ WykopAPI.prototype.getTagsList = function (callback) {
 
 	return new Promise(function(fulfill, reject) {
 
-		apiRequest(self, "Tags", "Index", null, null, null, function(error, body) {
+		apiRequest(self, "Tags", "Index", null, function(error, body) {
 
 			if (callback) {
 
