@@ -6,35 +6,42 @@ Przykładowe użycie:
 ```javascript
 var WykopAPI = require('./wykop-api.js');
 
+// możliwe opcje dodatkowe: 
+var options = {
+    output: "clear",
+    format: "xml", // lub "jsonp"
+    timeout: 40, // timeout żądania, standardowo 30 sekund
+    useragent: "wykop-api" // useragent
+}
 
-var api1 = new WykopAPI(appkey, secretkey); // opcjonalnie (appkey, secretkey, oputput, format)
+var api = new WykopAPI(appkey, secretkey, options);
 
-api1.authenticate(accountkey, function(error, body) {
+api.authenticate(accountkey, function(error, body) {
 	if (!error) {
-    	api1.addEntry(body, embed, function(error, body) {
+    	api.addEntry(body, embed, function(error, body) {
     		// 
     	});
   	};
 });
 ```
-z Promises
+z Promises (bluebird)
 ```javascript
 var WykopAPI = require('./wykop-api.js');
 
 
-var api2 = new WykopAPI(appkey, secretkey); // opcjonalnie (appkey, secretkey, oputput, format)
+var api2 = new WykopAPI(appkey, secretkey);
 
 api2.authenticate(accountkey).then(function(res1) {
-        console.log(res1);
-        return api2.addEntry(body, embed);
-    })
+    console.log(res1);
+    return api2.addEntry(body, embed);
+})
 
-    .then(function(res2) {
-        console.log(res2);
-    })
+.then(function(res2) {
+    console.log(res2);
+})
 
-    .catch(function(err) {
-        console.error(err);
+.catch(function(err) {
+    console.error(err);
 });
 ```
 
