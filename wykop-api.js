@@ -1379,7 +1379,8 @@ WykopAPI.prototype.search = function (question, page, callback) {
 	var postObject; 
 	if (question instanceof Object) {
 		postObject = question;
-	} else if (question instanceof String) {
+	} else if (typeof question === "string") {
+		console.log("string!");
 		postObject = {q:question};
 	}
 
@@ -1429,7 +1430,7 @@ WykopAPI.prototype.searchLinks = function (question, page, callback) {
 	var postObject; 
 	if (question instanceof Object) {
 		postObject = question;
-	} else if (question instanceof String) {
+	} else if (typeof question === "string") {
 		postObject = {q:question};
 	}
 
@@ -1468,7 +1469,7 @@ WykopAPI.prototype.searchEntries = function (question, page, callback) {
 	var postObject; 
 	if (question instanceof Object) {
 		postObject = question;
-	} else if (question instanceof String) {
+	} else if (typeof question === "string") {
 		postObject = {q:question};
 	}
 
@@ -1507,7 +1508,7 @@ WykopAPI.prototype.searchProfiles = function (question, page, callback) {
 	var postObject; 
 	if (question instanceof Object) {
 		postObject = question;
-	} else if (question instanceof String) {
+	} else if (typeof question === "string") {
 		postObject = {q:question};
 	}
 
@@ -2649,7 +2650,6 @@ WykopAPI.prototype.voteEntryComment  = function (param2, param3, callback) {
 };
 
 
-// do poprawy, scali metody w jedną - "vote"
 WykopAPI.prototype.unvoteEntry = function (param2, callback) {
 
 	if (arguments.length < 1) throw error;
