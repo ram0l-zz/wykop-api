@@ -123,8 +123,6 @@ http://www.wykop.pl/dla-programistow/dokumentacja/
 | Metoda API    | Metoda SDK     | Parametry SDK |   |  |  |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 |               |                |  **param1**       |  **param2** | **paramN** | **paramN**  |
-| Promoted | getPopularPromoted |  |  |  |  |
-| Upcoming | getPopularUpcoming |  |  |  |  |
 | Index | search | question |  |  |  |
 | Links | searchLinks | {} | *page |  |  |
 | Entries | searchEntries | {} | *page |  |  |
