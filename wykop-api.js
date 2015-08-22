@@ -4,9 +4,24 @@ var Promise = require("bluebird");
 var request = require("request");
 
 
+var error = new Error("Invalid arguments length");
+
+
+var SelfApiParams = function(page, sort, group, period) {
+	this.page = page;
+	this.sort = sort;
+	this.group = group;
+	this.period = period;
+};
+
+var SelfPostParams = function(body, embed, accountkey) {
+	this.body = body;
+	this.embed = embed;
+	this.accountkey = accountkey;
+};
+
 
 var apiRequest = function (self, rtype, rmethod, rmethod_params, callback) {
-
 
 	if (!rmethod_params) { rmethod_params = []; }
 
@@ -125,13 +140,41 @@ var apiRequest = function (self, rtype, rmethod, rmethod_params, callback) {
 		var errorObj, bodyObj;
 
 		if (error) {
+
 			errorObj = error;
+
 		} else if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+
 			errorObj = response;
+
 		} else if (body.error) {
+
+			var code    = body.error.code;
+			var resume = self.resume;
+
+			// jeśli klucz zalogowanego użytkownika wygasł, zaloguj ponownie
+			if ((code === 11 || code === 12 || code === 13) && resume === true) {
+
+				self.postParams = new SelfPostParams(null, null, self.accountkey);
+
+				delete self.userkey;
+
+				self.resumeCount++;
+
+				// zapobieganie nieskończonej pętli
+				if (self.resumeCount < 2) {
+
+					resumeUserkey(self, rtype, rmethod, rmethod_params, callback);
+					return false;
+				}
+			}
+
 			errorObj = body.error;
+
 		} else {
+
 			bodyObj = body;
+
 		}
 
 		callback(errorObj, bodyObj);
@@ -140,21 +183,23 @@ var apiRequest = function (self, rtype, rmethod, rmethod_params, callback) {
 };
 
 
-var SelfApiParams = function(page, sort, group, period) {
-	this.page = page;
-	this.sort = sort;
-	this.group = group;
-	this.period = period;
-};
+// ponowne logowanie
+function resumeUserkey(self, rtype, rmethod, rmethod_params, callback) {
 
-var SelfPostParams = function(body, embed, accountkey) {
-	this.body = body;
-	this.embed = embed;
-	this.accountkey = accountkey;
-};
+	apiRequest(self, "User", "Login", null, function(error, body) {
 
+		if (body.userkey) {
 
-var error = new Error("Invalid arguments length");
+			self.userkey = body.userkey;
+			self.resumeCount = 0;
+
+			// i zrób to co miałeś wykona wcześniej
+			apiRequest(self, rtype, rmethod, rmethod_params, callback);
+			return false;
+		}
+
+	});
+}
 
 
 
@@ -186,12 +231,15 @@ var WykopAPI = function (appkey, secretkey, options) {
 
 	this.appkey    = appkey;
 	this.secretkey = secretkey;
-
-	this.output    = options.output;
-	this.format    = options.format;
-	this.timeout   = options.timeout;
-	this.useragent = options.useragent;
-
+	if (options) {
+		this.output    = options.output;
+		this.format    = options.format;
+		this.timeout   = options.timeout;
+		this.useragent = options.useragent;
+		this.resume   = options.resume;
+		
+		this.resumeCount = 0;
+	}
 };
 
 
@@ -1627,7 +1675,7 @@ WykopAPI.prototype.login = function (accountkey, callback) {
 	var self = this;
 
 	if (accountkey === null || accountkey === undefined || accountkey === "") {
-		this.accountkey = accountkey;
+		accountkey = this.accountkey;
 	}
 
 	self.postParams = new SelfPostParams(null, null, accountkey);
@@ -3688,6 +3736,7 @@ WykopAPI.prototype.request = function(rtype, rmethod, rmethod_params, apiParams,
 		});
 	});
 }; */
+
 
 // export
 module.exports = WykopAPI;
