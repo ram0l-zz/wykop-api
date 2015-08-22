@@ -11,7 +11,8 @@ var options = {
     output: "clear",
     format: "xml", // lub "jsonp"
     timeout: 40, // timeout żądania, standardowo 30 sekund
-    useragent: "wykop-api" // useragent
+    useragent: "wykop-api", // useragent
+    resume: true // jeżeli klucz zalogowanego użytkownika (userkey) wygaśnie, nastąpi ponowne zalogowanie, default: false
 }
 
 var api = new WykopAPI(appkey, secretkey, options);
